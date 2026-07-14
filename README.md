@@ -2,70 +2,73 @@
 
 Terminal automation for [LettuceMeet](https://lettucemeet.com) -- create polls,
 view responses, and find optimal meeting overlaps, all from the command line.
-Designed to be used directly by humans **and** by AI agents (Pi, Claude Code,
-etc.) for autonomous scheduling.
+Designed for humans **and** AI agents (Pi, Claude Code, Codex, etc.).
 
-## Quick Start (for the Agent to Work)
-
-You do **one thing**: give the agent a fresh session token from your browser.
-That is it. The agent handles the rest.
+## Quick Start
 
 ```bash
-# Step 1: Install dependencies (one-time)
+# Install
 uv sync
 
-# Step 2: Give the agent your token (after browser login)
+# Save your session token (one-time, from browser)
 uv run python main.py login "eyJhbGciOiJIUzI1NiIs..."
+
+# Create a poll
+uv run python main.py create --title "Standup" --dates 2026-07-20 2026-07-21
 ```
 
-### Where to find the token
+One command per task. See full reference below.
 
-**Option A: DevTools console (easiest -- one line)**
+---
 
-1. Open [lettucemeet.com](https://lettucemeet.com) and log in
-2. Open DevTools (F12) > **Console** tab
-3. Paste this and press Enter:
-   ```javascript
-   copy(localStorage.getItem('akoko:session_token'))
-   ```
-4. The token is on your clipboard. Paste it below.
+## Install as an AI Agent Skill
 
-**Option B: DevTools manually**
-
-1. DevTools > **Application** tab (Chrome) or **Storage** tab (Firefox)
-2. Expand Local Storage > `https://lettucemeet.com`
-3. Find key `akoko:session_token`, copy its value
-
-**Option C: Bookmarklet (one-click after setup)**
-
-See [`docs/TOKEN_BOOKMARKLET.md`](docs/TOKEN_BOOKMARKLET.md) -- create a bookmark
-that reads the token and copies it with one click.
-
-### Save the token
-
-Run this once:
+This project includes a skill file that teaches AI agents how to use the CLI
+automatically. Agents discover it when you ask about scheduling or polls.
 
 ```bash
-uv run python main.py login "<paste-token-here>"
+# Install for your agent (Pi, Claude Code, Codex, etc.)
+bash scripts/install-skill.sh
+
+# Or symlink to stay updated with git pulls
+bash scripts/install-skill.sh --link
+
+# Remove it later
+bash scripts/install-skill.sh --uninstall
 ```
 
-That is the **only manual step**. The agent saves it to `data/session.json`
-and picks it up automatically.
+The skill lives at `.agents/skills/lettucemeet-cli/SKILL.md` and installs to
+`~/.agents/skills/lettucemeet-cli/`.
 
-### If the token expires
+---
 
-The JWT token expires after some time. When commands start failing with auth
-errors, just repeat the steps above and run `login` with a fresh token.
+## Token Setup (one-time, user does this)
 
-### Alternative: environment variable
+The agent cannot access your browser. You extract the token once.
 
-If you prefer not to save the token to disk, set it as an env var:
+**Easiest -- DevTools Console:**
+
+```javascript
+copy(localStorage.getItem('akoko:session_token'))
+```
+
+Paste that on lettucemeet.com (logged in) > DevTools Console. Send the copied
+token to the agent, who runs `login <token>`.
+
+**Or bookmarklet** -- create a bookmark with this URL for one-click copying:
+
+```
+javascript:(function(){let t=localStorage.getItem('akoko:session_token');if(t){navigator.clipboard.writeText(t).then(()=>{alert('Token copied!')}).catch(()=>{prompt('Copy:',t)})}else{alert('Not found - on lettucemeet.com?')}})();
+```
+
+**Or manual** -- DevTools > Application > Local Storage > `https://lettucemeet.com` >
+key `akoko:session_token`.
+
+**Or env var** (no saved file):
 
 ```bash
 export LETTUCEMEET_TOKEN="eyJhbGciOiJIUzI1NiIs..."
 ```
-
-This takes priority over the saved file and lasts for the shell session.
 
 ---
 
@@ -83,28 +86,21 @@ uv run python main.py create \
   --timezone Asia/Jerusalem
 ```
 
-Output: `Event created! ID: KZaEn` -- share the link
-`https://lettucemeet.com/l/KZaEn` with participants.
+Output: `Event created! ID: KZaEn` -- share `https://lettucemeet.com/l/KZaEn`.
 
-### View event details and responses
+### View event and responses
 
 ```bash
 uv run python main.py show KZaEn
 ```
 
-Shows title, description, dates, time range, and every respondent's name, email,
-and availability slots.
-
 ### Submit availability
 
 ```bash
 uv run python main.py respond KZaEn \
-  --name "Alice" \
-  --email "alice@example.com" \
+  --name "Alice" --email "alice@example.com" \
   --slots "2026-07-20 09:00 12:00" "2026-07-21 14:00 17:00"
 ```
-
-Each `--slots` argument is a quoted string with three parts: `DATE START END`.
 
 ### Find optimal meeting times
 
@@ -112,57 +108,44 @@ Each `--slots` argument is a quoted string with three parts: `DATE START END`.
 uv run python main.py overlap KZaEn
 ```
 
-Prints a per-date, per-hour grid showing how many people are available at each
-time slot and who they are.
-
 ```
 --- 2026-07-20 ---
     Time  Count  Available
-----------------------------------------
-09:00      1  Alice
+09:00      2  Alice, Bob
 10:00      2  Alice, Bob
-11:00      2  Alice, Bob
-12:00      1  Bob
+11:00      1  Bob
 ```
 
----
-
-## Setup (one-time)
+### Save token
 
 ```bash
-uv venv --python 3.11
-source .venv/bin/activate
-uv sync
+uv run python main.py login "eyJhbGciOiJIUzI1NiIs..."
 ```
-
----
-
-## How It Works
-
-This is **not** using a public API. LettuceMeet does not issue API tokens.
-Instead, the CLI uses the website's **internal GraphQL endpoint**
-(`https://api.lettucemeet.com/graphql`), reverse-engineered from a browser
-HAR capture.
-
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full breakdown:
-how the API was discovered, how the agent runs the CLI, the data flow, and
-limitations.
 
 ---
 
 ## Project Structure
 
 ```
-src/         Python package (lettucemeet_cli)
-tests/       Test suite (39 tests)
-docs/        Architecture docs and HAR archive
-data/        Local session storage (gitignored, created by login)
+.agents/skills/lettucemeet-cli/   # Agent skill (installable)
+src/lettucemeet_cli/              # Python package
+tests/                            # 39 tests
+docs/                             # Architecture, HAR archive
+data/                             # Local session (gitignored)
+scripts/install-skill.sh          # Skill installer
 ```
+
+## How It Works
+
+This uses LettuceMeet's **internal GraphQL API** (`api.lettucemeet.com/graphql`),
+reverse-engineered from a browser HAR capture. No public API exists.
+
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full breakdown.
 
 ## Development
 
 ```bash
-uv run pytest          # Run all 39 tests
+uv run pytest          # 39 tests
 uv run ruff check .    # Lint
 uv run mypy src/       # Type check
 ```
