@@ -25,7 +25,7 @@ def test_env_var_takes_priority_over_file(session_file, monkeypatch):
     assert config.load_token() == "env-token-789"
 
 
-def test_load_token_returns_none_when_not_set(monkeypatch):
+def test_load_token_returns_none_when_not_set(session_file, monkeypatch):
     monkeypatch.delenv("LETTUCEMEET_TOKEN", raising=False)
     assert config.load_token() is None
 

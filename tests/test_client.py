@@ -11,12 +11,19 @@ def client():
     return GraphQLClient(token="test-token-123")
 
 
+@pytest.fixture
+def no_session(session_file):
+    """Ensure no token file exists for tests that expect no token."""
+    # session_file is already empty from conftest
+    pass
+
+
 class TestGraphQLClient:
     def test_init_with_token(self):
         c = GraphQLClient("my-token")
         assert c.token == "my-token"
 
-    def test_init_no_token(self):
+    def test_init_no_token(self, no_session):
         c = GraphQLClient()
         assert c.token is None
         assert not c.authenticated
@@ -29,7 +36,7 @@ class TestGraphQLClient:
         assert headers["Authorization"] == "Bearer test-token-123"
         assert headers["Content-Type"] == "application/json"
 
-    def test_headers_without_token(self):
+    def test_headers_without_token(self, no_session):
         c = GraphQLClient()
         headers = c._headers()
         assert "Authorization" not in headers
