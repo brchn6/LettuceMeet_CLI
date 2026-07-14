@@ -22,8 +22,8 @@ uv run python main.py login "eyJhbGciOiJIUzI1NiIs..."
 
 1. Open [lettucemeet.com](https://lettucemeet.com) and log in
 2. Open DevTools (F12)
-3. **Chrome:** Application tab > Cookies > `lettucemeet.com` > `akoko:session_token`
-   **Firefox:** Storage tab > Cookies > `lettucemeet.com` > `akoko:session_token`
+3. **Chrome:** Application tab > Local Storage > `https://lettucemeet.com` > key `akoko:session_token`
+   **Firefox:** Storage tab > Local Storage > `https://lettucemeet.com` > key `akoko:session_token`
 4. Copy the token value (long JWT string starting with `eyJ...`)
 5. Run the `login` command above
 

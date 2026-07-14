@@ -23,7 +23,7 @@ session using Chrome DevTools. This HAR contains 73 HTTP entries including:
 
 - **GraphQL queries/mutations** sent to `POST https://api.lettucemeet.com/graphql`
 - **Request/response bodies** with the exact field names and types
-- **Session cookies** including the JWT auth token
+- **Local Storage session data** including the JWT auth token
 - **Static JS files** containing the full Relay-compiled GraphQL operation texts
 
 ### Step 2: Operation extraction
@@ -107,7 +107,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ### Token lifecycle
 
 1. **User** logs into lettucemeet.com in a browser
-2. **User** copies the `akoko:session_token` cookie value
+2. **User** copies the `akoko:session_token` value from Local Storage
 3. **User** runs `uv run python main.py login "<token>"`
 4. **Token** is saved to `data/session.json`
 5. **Agent** picks it up automatically via `load_token()` in `config.py`
@@ -166,7 +166,7 @@ lettucemeet
 | `src/lettucemeet_cli/overlap.py` | Overlap grid computation and formatting |
 | `src/lettucemeet_cli/config.py` | Session file paths, token loading, endpoint URL |
 | `docs/lettucemeet.com.har` | Browser HAR archive used for API reverse-engineering |
-| `docs/idontknow_maybe_wikll_hwelk` | Raw cookie/session data extracted from HAR |
+| `docs/idontknow_maybe_wikll_hwelk` | Raw localStorage/session data extracted from HAR |
 | `data/session.json` | Saved JWT token (gitignored, created by `login`) |
 
 ---
