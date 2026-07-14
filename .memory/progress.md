@@ -65,3 +65,11 @@
 - Final commit: "chore: finalize LettuceMeet CLI implementation"
 
 ## All tasks completed.
+
+## Post-completion
+
+* **2026-07-14**: Live API verified with user's token and event `KZaEn`.
+* **2026-07-14**: Created `docs/ARCHITECTURE.md` explaining the reverse-engineering
+  process, data flow, token lifecycle, and agent integration.
+* **2026-07-14**: Updated `README.md` with clear user instructions: what they must
+  do (provide token) for the agent to work.
