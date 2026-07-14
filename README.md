@@ -1,63 +1,72 @@
-# LettuceMeet_CLI
+# LettuceMeet CLI
 
-## Description
-
-Describe your project here.
+Terminal automation for [LettuceMeet](https://lettucemeet.com) - create polls, view responses, and find optimal meeting overlaps, all from the command line.
 
 ## Setup
 
-This project uses `uv` for Python environment and dependency management.
-
-### Create environment
-
 ```bash
 uv venv --python 3.11
-```
-
-### Activate environment
-
-```bash
 source .venv/bin/activate
-```
-
-### Install dependencies
-
-```bash
 uv sync
 ```
 
-### Add dependencies
+## Authentication
+
+Get your session token from lettucemeet.com cookies and save it:
 
 ```bash
-uv add package-name
+uv run python main.py login "eyJhbGciOiJIUzI1NiIs..."
 ```
 
-### Add development dependencies
+Or set the `LETTUCEMEET_TOKEN` environment variable.
+
+## Usage
+
+### Create a poll
 
 ```bash
-uv add --dev pytest ruff mypy
+uv run python main.py create \
+  --title "Team standup" \
+  --dates 2026-07-20 2026-07-21 2026-07-22 \
+  --start-time 09:00 \
+  --end-time 17:00 \
+  --timezone Asia/Jerusalem
 ```
 
-### Run the project
+### View event details and responses
 
 ```bash
-uv run python main.py
+uv run python main.py show J5R5a
 ```
 
-### Run tests
+### Submit availability
 
 ```bash
-uv run pytest
+uv run python main.py respond J5R5a \
+  --name "Alice" \
+  --email "alice@example.com" \
+  --slots "2026-07-20 09:00 12:00" "2026-07-21 14:00 17:00"
 ```
 
-## Structure
+### Find optimal meeting times
+
+```bash
+uv run python main.py overlap J5R5a
+```
+
+## Project Structure
 
 ```
-src/       Source code
-tests/     Tests
-docs/      Documentation
-data/      Local datasets
-scripts/   Utility scripts
-.agents/   Agent operating instructions
-.memory/   Project memory, decisions, and progress
+src/         Python package
+tests/       Test suite
+docs/        Documentation and HAR archive
+data/        Local session storage (gitignored)
+```
+
+## Development
+
+```bash
+uv run pytest          # Run tests
+uv run ruff check .    # Lint
+uv run mypy src/       # Type check
 ```
