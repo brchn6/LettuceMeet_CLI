@@ -87,8 +87,8 @@ uv run python main.py show KZaEn
 
 ## Token / Authentication Flow
 
-The LettuceMeet API authenticates via a **JWT bearer token** stored in a browser
-cookie named `akoko:session_token`.
+The LettuceMeet API authenticates via a **JWT bearer token** stored in the browser's
+Local Storage under the key `akoko:session_token`.
 
 ```
 Token resolution chain (first wins):

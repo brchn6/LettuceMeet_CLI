@@ -20,15 +20,37 @@ uv run python main.py login "eyJhbGciOiJIUzI1NiIs..."
 
 ### Where to find the token
 
-1. Open [lettucemeet.com](https://lettucemeet.com) and log in
-2. Open DevTools (F12)
-3. **Chrome:** Application tab > Local Storage > `https://lettucemeet.com` > key `akoko:session_token`
-   **Firefox:** Storage tab > Local Storage > `https://lettucemeet.com` > key `akoko:session_token`
-4. Copy the token value (long JWT string starting with `eyJ...`)
-5. Run the `login` command above
+**Option A: DevTools console (easiest -- one line)**
 
-That is the **only manual step**. Now the agent can create polls, fetch
-responses, and compute overlaps on your behalf.
+1. Open [lettucemeet.com](https://lettucemeet.com) and log in
+2. Open DevTools (F12) > **Console** tab
+3. Paste this and press Enter:
+   ```javascript
+   copy(localStorage.getItem('akoko:session_token'))
+   ```
+4. The token is on your clipboard. Paste it below.
+
+**Option B: DevTools manually**
+
+1. DevTools > **Application** tab (Chrome) or **Storage** tab (Firefox)
+2. Expand Local Storage > `https://lettucemeet.com`
+3. Find key `akoko:session_token`, copy its value
+
+**Option C: Bookmarklet (one-click after setup)**
+
+See [`docs/TOKEN_BOOKMARKLET.md`](docs/TOKEN_BOOKMARKLET.md) -- create a bookmark
+that reads the token and copies it with one click.
+
+### Save the token
+
+Run this once:
+
+```bash
+uv run python main.py login "<paste-token-here>"
+```
+
+That is the **only manual step**. The agent saves it to `data/session.json`
+and picks it up automatically.
 
 ### If the token expires
 
