@@ -178,7 +178,5 @@ lettucemeet
 - **Token expiration** -- JWTs expire. The user must provide a fresh token.
 - **No calendar sync** -- Google Calendar / Outlook integration is present in the
   web app but not exposed in this CLI.
-- **No event deletion** -- The `DeleteEventMutation` exists in the API but is
-  not exposed as a CLI command (can be added if needed).
 - **Anonymous responses only** -- The `respond` command submits as an anonymous
   user. Authenticated responses require a different flow (not implemented).

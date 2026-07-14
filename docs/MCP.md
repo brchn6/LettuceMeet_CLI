@@ -11,6 +11,7 @@ directly -- no manual CLI commands needed.
 | `show_event` | Get event details with all poll responses |
 | `respond_to_poll` | Submit availability to an event |
 | `compute_overlap` | Calculate best meeting times from responses |
+| `delete_event` | Delete an event |
 
 ## Setup
 

@@ -5,6 +5,7 @@ from lettucemeet_cli.api import (
     get_event,
     create_event,
     create_poll_response,
+    delete_event,
 )
 from lettucemeet_cli.client import GraphQLClient
 from lettucemeet_cli.models import CreateEventInput, CreatePollResponseInput, Availability
@@ -75,3 +76,22 @@ class TestCreatePollResponse:
             )
             result = create_poll_response(client, inp)
             assert result["id"] == "RESP1"
+
+
+class TestDeleteEvent:
+    def test_returns_message(self, client):
+        with requests_mock.Mocker() as m:
+            m.post(GRAPHQL_ENDPOINT, json={
+                "data": {"deleteEvent": {"message": "Event Deleted Successfully"}}
+            })
+            msg = delete_event(client, "EVT1")
+            assert msg == "Event Deleted Successfully"
+
+    def test_sends_mutation(self, client):
+        with requests_mock.Mocker() as m:
+            m.post(GRAPHQL_ENDPOINT, json={
+                "data": {"deleteEvent": {"message": "ok"}}
+            })
+            delete_event(client, "EVT1")
+            req = m.request_history[0]
+            assert "DeleteEventMutation" in req.text

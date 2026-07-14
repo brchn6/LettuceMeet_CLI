@@ -85,6 +85,12 @@ Prints a per-date, per-hour grid:
 11:00      1  Bob
 ```
 
+### Delete an event
+
+```bash
+uv run python main.py delete KZaEn
+```
+
 ### Save session token
 
 ```bash

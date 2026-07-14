@@ -94,3 +94,15 @@ def test_login_saves_token(tmp_path, monkeypatch, capsys):
     assert data["session_token"] == "mytoken123"
     captured = capsys.readouterr()
     assert "saved" in captured.out.lower()
+
+
+def test_delete_command_sends_mutation():
+    """The delete command sends DeleteEventMutation."""
+    with requests_mock.Mocker() as m:
+        m.post(GRAPHQL_ENDPOINT, json={
+            "data": {"deleteEvent": {"message": "Event Deleted Successfully"}}
+        })
+        exit_code = main(["--token", "test-token", "delete", "EVT1"])
+        assert exit_code == 0
+        req = m.request_history[0]
+        assert "DeleteEventMutation" in req.text

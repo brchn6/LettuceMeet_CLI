@@ -6,7 +6,7 @@ import argparse
 import sys
 from typing import Optional
 
-from lettucemeet_cli.api import get_event, create_event, create_poll_response
+from lettucemeet_cli.api import get_event, create_event, create_poll_response, delete_event
 from lettucemeet_cli.client import GraphQLClient, LettuceMeetError
 from lettucemeet_cli.config import save_token
 from lettucemeet_cli.models import (
@@ -56,6 +56,10 @@ def build_parser() -> argparse.ArgumentParser:
     # overlap
     p_overlap = sub.add_parser("overlap", help="Calculate optimal meeting times from poll responses")
     p_overlap.add_argument("event_id", help="Event ID")
+
+    # delete
+    p_delete = sub.add_parser("delete", help="Delete an event")
+    p_delete.add_argument("event_id", help="Event ID to delete")
 
     return parser
 
@@ -147,6 +151,10 @@ def main(argv: Optional[list[str]] = None) -> int:
             event = get_event(client, args.event_id)
             grid = compute_overlap_grid(event)
             print(format_overlap_grid(grid))
+
+        elif args.command == "delete":
+            msg = delete_event(client, args.event_id)
+            print(f"Event {args.event_id}: {msg}")
 
     except LettuceMeetError as e:
         print(f"Error: {e}", file=sys.stderr)

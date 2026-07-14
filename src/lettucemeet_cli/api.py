@@ -124,3 +124,27 @@ def create_poll_response(
         operation_name="CreatePollResponseMutation",
     )
     return data["createPollResponse"]["pollResponse"]
+
+
+_DELETE_EVENT_MUTATION = """
+mutation DeleteEventMutation($input: DeleteEventInput!) {
+  deleteEvent(input: $input) {
+    message
+    user {
+      events { id }
+      notifications { id }
+      id
+    }
+  }
+}
+"""
+
+
+def delete_event(client: GraphQLClient, event_id: str) -> str:
+    """Delete an event. Returns the confirmation message."""
+    data = client.execute(
+        _DELETE_EVENT_MUTATION,
+        variables={"input": {"id": event_id}},
+        operation_name="DeleteEventMutation",
+    )
+    return data["deleteEvent"]["message"]

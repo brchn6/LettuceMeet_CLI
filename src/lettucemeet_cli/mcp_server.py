@@ -16,7 +16,7 @@ from typing import Any
 
 # Import the CLI internals
 from lettucemeet_cli.client import GraphQLClient, LettuceMeetError
-from lettucemeet_cli.api import get_event, create_event, create_poll_response
+from lettucemeet_cli.api import get_event, create_event, create_poll_response, delete_event
 from lettucemeet_cli.models import (
     CreateEventInput,
     CreatePollResponseInput,
@@ -121,6 +121,17 @@ TOOLS = [
             "required": ["event_id"],
         },
     },
+    {
+        "name": "delete_event",
+        "description": "Delete a LettuceMeet event",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "event_id": {"type": "string", "description": "Event ID to delete"},
+            },
+            "required": ["event_id"],
+        },
+    },
 ]
 
 # --- Tool implementations ---
@@ -206,11 +217,18 @@ def tool_compute_overlap(args: dict) -> str:
     return format_overlap_grid(grid)
 
 
+def tool_delete_event(args: dict) -> str:
+    client = _create_client(args.get("_token"))
+    msg = delete_event(client, args["event_id"])
+    return f"Event {args['event_id']}: {msg}"
+
+
 TOOL_DISPATCH = {
     "create_poll": tool_create_poll,
     "show_event": tool_show_event,
     "respond_to_poll": tool_respond_to_poll,
     "compute_overlap": tool_compute_overlap,
+    "delete_event": tool_delete_event,
 }
 
 # --- MCP Server ---

@@ -41,6 +41,7 @@ Paste in DevTools Console on lettucemeet.com (logged in).
 | `show <id>` | View event + responses |
 | `respond <id> --name N --email E --slots "DATE START END"` | Submit availability |
 | `overlap <id>` | Compute best times |
+| `delete <id>` | Delete an event |
 
 Token resolution: `--token` flag > `LETTUCEMEET_TOKEN` env var > `data/session.json`
 
