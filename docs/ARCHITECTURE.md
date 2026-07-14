@@ -16,15 +16,13 @@ User request -> AI Agent (Pi) -> Python CLI -> GraphQL HTTP -> api.lettucemeet.c
 
 ## How the API Was Reverse-Engineered
 
-### Step 1: HAR capture
+### Step 1: HAR capture (removed from repo)
 
-A file `docs/lettucemeet.com.har` (2.6 MB) was recorded from a real browser
-session using Chrome DevTools. This HAR contains 73 HTTP entries including:
-
-- **GraphQL queries/mutations** sent to `POST https://api.lettucemeet.com/graphql`
-- **Request/response bodies** with the exact field names and types
-- **Local Storage session data** including the JWT auth token
-- **Static JS files** containing the full Relay-compiled GraphQL operation texts
+A 2.6 MB HTTP Archive was recorded from a real browser session using Chrome
+DevTools. It contained the GraphQL queries, responses, session data, and JS
+source needed to reconstruct the API. The file contained private user data and
+was removed from the repository. All extracted operations are embedded in
+`src/lettucemeet_cli/api.py`.
 
 ### Step 2: Operation extraction
 
@@ -165,8 +163,6 @@ lettucemeet
 | `src/lettucemeet_cli/models.py` | Dataclasses: Event, PollResponse, Availability, inputs |
 | `src/lettucemeet_cli/overlap.py` | Overlap grid computation and formatting |
 | `src/lettucemeet_cli/config.py` | Session file paths, token loading, endpoint URL |
-| `docs/lettucemeet.com.har` | Browser HAR archive used for API reverse-engineering |
-| `docs/idontknow_maybe_wikll_hwelk` | Raw localStorage/session data extracted from HAR |
 | `data/session.json` | Saved JWT token (gitignored, created by `login`) |
 
 ---

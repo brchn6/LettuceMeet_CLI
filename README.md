@@ -1,68 +1,89 @@
 # LettuceMeet MCP
 
-Unofficial MCP tools for [LettuceMeet](https://lettucemeet.com) -- create polls, view responses, find meeting overlaps via CLI or MCP server.
+Unofficial CLI + MCP tools for [LettuceMeet](https://lettucemeet.com).
 
-Uses the website's internal GraphQL API (`api.lettucemeet.com/graphql`). No public API exists.
+Create polls, read responses, find meeting overlaps -- all from the terminal.
+Designed for AI agents that want to automate scheduling without a browser.
 
-## MCP Server (for agents)
+## Why
 
-```json
-{
-  "mcpServers": {
-    "lettucemeet": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/lettucemeet-cli", "python", "src/lettucemeet_cli/mcp_server.py"]
-    }
-  }
-}
+LettuceMeet has no public API. The official platform only works through a
+web browser. This project reverse-engineers the internal GraphQL API so that
+**AI agents can schedule meetings directly from the command line**.
+
+Built by someone who believes every web app should be automatable from a
+terminal. CLI-first, agent-friendly, zero bloat.
+
+## How it works
+
+A Python CLI (`argparse` + `requests`) talks to `api.lettucemeet.com/graphql`
+using JWT auth. An MCP server wrapper exposes the same operations as callable
+tools for any MCP-compatible agent (Pi, Claude Code, Codex, etc.).
+
+```
+User / Agent -> CLI / MCP -> GraphQL -> lettucemeet.com
 ```
 
-**Tools:** `create_poll`, `show_event`, `respond_to_poll`, `compute_overlap`
-
-## Quick Setup
+## Quick setup
 
 ```bash
 uv sync
 uv run python main.py login "<token>"   # one-time: paste token from user
 ```
 
-Token source (user extracts from browser):
+**Token** -- user runs this on lettucemeet.com (logged in) > DevTools Console:
 ```javascript
 copy(localStorage.getItem('akoko:session_token'))
 ```
-Paste in DevTools Console on lettucemeet.com (logged in).
 
-## CLI Commands
+## Commands
 
-| Command | What |
+| Command | Action |
 |---|---|
 | `login <token>` | Save session token |
-| `create --title T --dates D1 D2 [--start-time 09:00] [--end-time 17:00] [--timezone Asia/Jerusalem]` | Create poll |
+| `create --title T --dates D1 D2 [--start-time 09:00] [--end-time 17:00] [--timezone TZ]` | Create poll |
 | `show <id>` | View event + responses |
 | `respond <id> --name N --email E --slots "DATE START END"` | Submit availability |
-| `overlap <id>` | Compute best times |
+| `overlap <id>` | Compute best meeting times |
 | `delete <id>` | Delete an event |
 
 Token resolution: `--token` flag > `LETTUCEMEET_TOKEN` env var > `data/session.json`
 
-## Install as Agent Skill
+## MCP server
+
+```json
+{
+  "mcpServers": {
+    "lettucemeet": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to", "python", "src/lettucemeet_cli/mcp_server.py"]
+    }
+  }
+}
+```
+
+Tools: `create_poll`, `show_event`, `respond_to_poll`, `compute_overlap`, `delete_event`
+
+## Agent skill
 
 ```bash
 bash scripts/install-skill.sh --link
 ```
 
-## Tests
+Agents auto-discover and can run CLI commands autonomously.
 
-```bash
-uv run pytest
-```
-
-## Structure
+## Project
 
 ```
-src/lettucemeet_cli/   # Python package
-tests/                 # 39 tests
+src/lettucemeet_cli/   # Python package (6 modules, 42 tests)
 scripts/               # Skill installer
 docs/                  # Architecture, MCP docs
-data/session.json      # Saved token (gitignored)
 ```
+
+```bash
+uv run pytest          # 42 tests
+```
+
+## License
+
+MIT

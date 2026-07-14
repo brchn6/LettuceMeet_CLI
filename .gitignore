@@ -20,3 +20,8 @@ node_modules/
 # Build artifacts
 *.egg-info/
 *.egg
+
+# npm/dev dependencies (not core)
+package.json
+bun.lock
+node_modules/
