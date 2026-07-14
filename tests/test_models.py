@@ -59,12 +59,12 @@ class TestEvent:
     def test_from_api_data(self, event_j5r5a):
         event = Event.from_api_data(event_j5r5a)
         assert event.id == "J5R5a"
-        assert event.title == "LIS1 proteomics analysis discussion"
+        assert event.title == "Team sync"
         assert event.poll_start_time == "09:00:00.000Z"
         assert event.poll_end_time == "17:00:00.000Z"
         assert len(event.poll_dates) == 8
         assert len(event.poll_responses) >= 1
-        assert event.poll_responses[0].user_name == "BarCohen"
+        assert event.poll_responses[0].user_name == "Alice"
 
     def test_poll_window_hours(self, event_j5r5a):
         event = Event.from_api_data(event_j5r5a)

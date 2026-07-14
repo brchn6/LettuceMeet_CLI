@@ -1,7 +1,7 @@
 {
   "id": "J5R5a",
-  "title": "LIS1 proteomics analysis discussion",
-  "description": "go over the LIS1 organoids proteomics experiment and decide on analysis plan",
+  "title": "Team sync",
+  "description": "Weekly team sync to discuss progress",
   "type": 0,
   "pollStartTime": "09:00:00.000Z",
   "pollEndTime": "17:00:00.000Z",
@@ -32,8 +32,8 @@
       "user": {
         "__typename": "User",
         "id": "VXNlcjozODc4NjM==",
-        "name": "BarCohen",
-        "email": "bar.cohen@weizmann.ac.il",
+        "name": "Alice",
+        "email": "alice@example.com",
         "__isNode": "User"
       },
       "availabilities": [
@@ -66,8 +66,8 @@
       "id": "UG9sbFJlc3BvbnNlOjExMDk5ODU3=",
       "user": {
         "__typename": "AnonymousUser",
-        "name": "Elizabeth Vaisbourd",
-        "email": "elizabeth.vaisbourd@weizmann.ac.il"
+        "name": "Bob",
+        "email": "bob@example.com"
       },
       "availabilities": [
         {
@@ -115,8 +115,8 @@
       "id": "UG9sbFJlc3BvbnNlOjExMDk5MzQ5=",
       "user": {
         "__typename": "AnonymousUser",
-        "name": "Slava",
-        "email": ""
+        "name": "Carol",
+        "email": "carol@example.com"
       },
       "availabilities": [
         {
@@ -152,8 +152,8 @@
       "id": "UG9sbFJlc3BvbnNlOjExMDg3OTIz=",
       "user": {
         "__typename": "AnonymousUser",
-        "name": "Orly Reiner",
-        "email": "orly.reiner@weizmann.ac.il"
+        "name": "Dave",
+        "email": "dave@example.com"
       },
       "availabilities": [
         {

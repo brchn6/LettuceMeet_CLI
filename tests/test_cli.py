@@ -49,8 +49,8 @@ def test_show_command_prints_event_info(event_j5r5a, capsys):
         m.post(GRAPHQL_ENDPOINT, json={"data": {"event": event_j5r5a}})
         main(["--token", "test-token", "show", "J5R5a"])
         captured = capsys.readouterr()
-        assert "LIS1 proteomics" in captured.out
-        assert "BarCohen" in captured.out
+        assert "Team sync" in captured.out
+        assert "Alice" in captured.out
 
 
 def test_respond_command_sends_mutation():
@@ -80,7 +80,7 @@ def test_overlap_command_computes_and_displays(event_j5r5a, capsys):
         captured = capsys.readouterr()
         assert "2026-06-22" in captured.out
         assert "09:00" in captured.out
-        assert "BarCohen" in captured.out
+        assert "Alice" in captured.out
 
 
 def test_login_saves_token(tmp_path, monkeypatch, capsys):

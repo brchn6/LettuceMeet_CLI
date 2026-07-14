@@ -33,7 +33,7 @@ def event_j5r5a() -> dict:
         "pollResponses": [
             {
                 "id": "UG9sbFJlc3BvbnNlOjExMDg3NTYz",
-                "user": {"__typename": "User", "name": "BarCohen", "email": "bar.cohen@weizmann.ac.il"},
+                "user": {"__typename": "User", "name": "Alice", "email": "alice@example.com"},
                 "availabilities": [
                     {"start": "2026-06-22T09:00:00.000Z", "end": "2026-06-22T17:00:00.000Z"},
                     {"start": "2026-06-25T09:00:00.000Z", "end": "2026-06-25T17:00:00.000Z"},

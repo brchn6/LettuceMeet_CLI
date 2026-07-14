@@ -284,7 +284,7 @@ def event_j5r5a() -> dict:
         "pollResponses": [
             {
                 "id": "UG9sbFJlc3BvbnNlOjExMDg3NTYz",
-                "user": {"__typename": "User", "name": "BarCohen", "email": "bar.cohen@weizmann.ac.il"},
+                "user": {"__typename": "User", "name": "Alice", "email": "alice@example.com"},
                 "availabilities": [
                     {"start": "2026-06-22T09:00:00.000Z", "end": "2026-06-22T17:00:00.000Z"},
                     {"start": "2026-06-25T09:00:00.000Z", "end": "2026-06-25T17:00:00.000Z"},
@@ -465,7 +465,7 @@ class TestEvent:
         assert event.poll_end_time == "17:00:00.000Z"
         assert len(event.poll_dates) == 8
         assert len(event.poll_responses) >= 1
-        assert event.poll_responses[0].user_name == "BarCohen"
+        assert event.poll_responses[0].user_name == "Alice"
 
     def test_poll_window_hours(self, event_j5r5a):
         event = Event.from_api_data(event_j5r5a)
@@ -1348,7 +1348,7 @@ def test_show_command_prints_event_info(event_j5r5a, capsys):
         main(["--token", "test-token", "show", "J5R5a"])
         captured = capsys.readouterr()
         assert "LIS1 proteomics" in captured.out
-        assert "BarCohen" in captured.out
+        assert "Alice" in captured.out
 
 
 def test_respond_command_sends_mutation():
@@ -1378,7 +1378,7 @@ def test_overlap_command_computes_and_displays(event_j5r5a, capsys):
         captured = capsys.readouterr()
         assert "2026-06-22" in captured.out
         assert "09:00" in captured.out
-        assert "BarCohen" in captured.out
+        assert "Alice" in captured.out
 
 
 def test_login_saves_token(tmp_path, monkeypatch, capsys):

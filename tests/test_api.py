@@ -22,7 +22,7 @@ class TestGetEvent:
             m.post(GRAPHQL_ENDPOINT, json={"data": {"event": event_j5r5a}})
             event = get_event(client, "J5R5a")
             assert event.id == "J5R5a"
-            assert event.title == "LIS1 proteomics analysis discussion"
+            assert event.title == "Team sync"
             assert len(event.poll_responses) >= 1
 
     def test_sends_correct_query(self, client):
