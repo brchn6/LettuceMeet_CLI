@@ -52,7 +52,16 @@
 - All 39 tests pass (full suite)
 - Committed as "feat: wire CLI commands to API operations with --token option"
 
-## Next Tasks
+### Task 8: Update main.py wrapper and README
+- main.py replaced with proper docstring usage examples
+- README.md with full setup, auth, usage, and development sections
+- Committed as "docs: update main.py wrapper and README with usage examples"
 
-* Task 8: Update main.py wrapper and README
-* Task 9: End-to-end verification with real API
+### Task 9: End-to-end verification with real API
+- Full test suite: 39/39 tests pass
+- CLI help shows all 5 subcommands (login, create, show, respond, overlap)
+- Import check: `from lettucemeet_cli.cli import main` works
+- Console entry point: `uv run lettucemeet --help` works
+- Final commit: "chore: finalize LettuceMeet CLI implementation"
+
+## All tasks completed.
