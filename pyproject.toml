@@ -1,16 +1,20 @@
 [project]
 name = "LettuceMeet_CLI"
 version = "0.1.0"
-description = ""
+description = "Terminal CLI for LettuceMeet - create polls, view responses, find meeting overlaps"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["requests"]
+
+[project.scripts]
+lettucemeet = "lettucemeet_cli.cli:main"
 
 [dependency-groups]
 dev = [
-"pytest",
-"ruff",
-"mypy",
+  "pytest",
+  "ruff",
+  "mypy",
+  "requests-mock",
 ]
 
 [tool.pytest.ini_options]
